@@ -15,6 +15,6 @@ const initKonamiCode = (callback: () => void, onKeyPressed: (key: string) => voi
             konamiIndex = 0;
         }
     });
-}
+};
 
 export default initKonamiCode;

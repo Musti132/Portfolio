@@ -78,7 +78,9 @@ timelineEvents.value.sort((a, b) => parseInt(b.year) - parseInt(a.year));
                     class="absolute -left-5 top-2.5 w-4 h-4 rounded-full flex items-center justify-center font-semibold"
                     :class="event.active ? 'bg-cyan-500 animate-ping' : 'bg-gray-600'">
                 </span>
-                <span v-if="event.active" class="absolute -left-5 top-2.5 w-4 h-4 rounded-full flex items-center justify-center bg-cyan-500 text-white font-semibold"></span>
+                <span
+                    v-if="event.active"
+                    class="absolute -left-5 top-2.5 w-4 h-4 rounded-full flex items-center justify-center bg-cyan-500 text-white font-semibold"></span>
                 <h3 class="text-xl font-medium text-white">{{ event.title }}</h3>
                 <p class="text-sm text-white/70 mb-2">{{ event.month }}</p>
                 <p class="text-white/80">{{ event.description }}</p>

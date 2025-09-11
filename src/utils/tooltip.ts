@@ -68,8 +68,7 @@ const ToolTipDirective = {
         activeElement.addEventListener('mouseleave', hideTooltip);
     },
 
-    updated(el: HTMLElement, binding: DirectiveBinding) {
-    },
+    updated(_el: HTMLElement, _binding: DirectiveBinding) {},
 
     onUnmounted() {
         const tooltips = document.querySelectorAll('.tooltip');

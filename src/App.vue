@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref, watch, computed } from 'vue';
+import { onMounted, onUnmounted, ref, watch, computed, useTemplateRef } from 'vue';
 import Contact from '@/views/Contact.vue';
 import Navbar from '@/layout/Navbar.vue';
 import { isXLargeScreen, is2XLargeScreen, isLargeDesktop, isLargeScreen, isMediumScreen } from '@/utils/screen';
@@ -16,8 +16,8 @@ const showWidget = ref<boolean>(false);
 const springProgress = ref(0);
 
 /* Canvas Properties */
-const canvas = ref<HTMLCanvasElement | null>(null);
-const main = ref<HTMLElement | null>(null);
+const canvas = useTemplateRef<HTMLCanvasElement>('canvas');
+const main = useTemplateRef<HTMLDivElement>('main');
 
 /* Screen Size Reactive Properties */
 const slideX = useSpring(200, { bounce: 0.2, duration: 600 });
@@ -167,7 +167,7 @@ onMounted(() => {
         });
 
         resizeObserver.observe(main?.value as Element, {
-            box: 'device-pixel-content-box',
+            box: 'border-box',
         });
     }
 
@@ -226,10 +226,13 @@ const widgetTransformStyle = computed(() => {
     <div class="glass-morphism sticky top-0 z-50 mb-8 rounded-md" v-if="!isLargeDesktop">
         <Navbar />
     </div>
-    <motion.div :animate="{ rotate: rotateValue, scale: scaleValue }" class="layout flex items-start" :class="{ 'gap-4': showWidget }">
+    <motion.div
+        :animate="{ rotate: rotateValue, scale: scaleValue }"
+        class="layout flex items-start"
+        :class="{ 'gap-4': showWidget }">
         <div
             ref="main"
-            class="main app flex flex-col gap-8 min-w-0 flex-animate canvas-shown"
+            class="main glass-morphism app flex flex-col gap-8 min-w-0 flex-animate canvas-shown"
             :class="{
                 'glass-border': !isLargeDesktop,
             }">
