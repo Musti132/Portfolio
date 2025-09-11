@@ -77,7 +77,6 @@ const initializeCanvas = () => {
     ctx.lineJoin = 'round';
     ctx.miterLimit = 2;
 
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.scale(dpr, dpr);
     drawBorder(ctx, appWidth, appHeight);
 };
