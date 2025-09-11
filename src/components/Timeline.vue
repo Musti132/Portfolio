@@ -23,7 +23,7 @@ const timelineEvents = ref<TimelineEvent[]>([
             },
             {
                 title: 'Trainee at Ordbogen A/S',
-                description: 'Joined Ordbogen A/S as a Trainee, working on various web applications.',
+                description: 'Joined Ordbogen A/S as a Trainee, to enhance my skills in web development, and working on various small projects.',
                 month: 'October',
             },
         ],
@@ -32,9 +32,9 @@ const timelineEvents = ref<TimelineEvent[]>([
         year: '2024',
         events: [
             {
-                title: 'Full-time Developer at Ordbogen A/S',
+                title: 'Full time Junior Developer',
                 description:
-                    'Promoted to a full-time Junior Developer position at Ordbogen A/S, contributing to projects.',
+                    'Promoted to a full-time Junior Developer position at Ordbogen A/S, contributing to various projects. Primarily focusing on their largest platform Grammatip.com.',
                 month: 'January',
             },
             {
@@ -64,7 +64,25 @@ const timelineEvents = ref<TimelineEvent[]>([
     },
 ]);
 
-timelineEvents.value.sort((a, b) => parseInt(b.year) - parseInt(a.year));
+timelineEvents.value.sort((a, b) => parseInt(b.year) - parseInt(a.year)).forEach((yearBlock) => {
+    yearBlock.events.sort((a, b) => {
+        const monthOrder = [
+            'January',
+            'February',
+            'March',
+            'April',
+            'May',
+            'June',
+            'July',
+            'August',
+            'September',
+            'October',
+            'November',
+            'December',
+        ];
+        return monthOrder.indexOf(b.month) - monthOrder.indexOf(a.month);
+    });
+});
 </script>
 
 <template>

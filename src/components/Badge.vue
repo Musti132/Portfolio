@@ -30,6 +30,7 @@ const props = withDefaults(defineProps<PropsForDefaults>(), {
         target="_blank"
         rel="noopener noreferrer"
         class="text-white rounded-md text-sm font-medium transition-colors w-fit"
+        :aria-label="badgeHref"
         :class="{
             'bg-blue-500 hover:bg-blue-500/50': color === 'primary',
             'bg-gray-500 hover:bg-gray-500/50': color === 'secondary',

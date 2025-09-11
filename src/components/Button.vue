@@ -49,6 +49,7 @@ const action = () => {
         target="_blank"
         rel="noopener noreferrer"
         class="inline-block px-4 py-2 text-white rounded-md text-sm font-medium transition-colors cursor-pointer"
+        :aria-label="buttonHref"
         :class="{
             'bg-blue-500 hover:bg-blue-500/50': color === 'primary',
             'bg-gray-500 hover:bg-gray-500/50': color === 'secondary',

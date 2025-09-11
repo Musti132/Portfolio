@@ -1,10 +1,11 @@
-@import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap');
 @import 'tailwindcss';
+
 @layer logos {
     .fa-php {
         color: #474a8a;
     }
 }
+
 @layer utilities {
     .glass-morphism {
         @apply backdrop-blur-[20px] backdrop-saturate-[100%] shadow-[0_8px_30px_rgba(2,6,23,0.35)];
@@ -46,7 +47,7 @@ body {
     padding: var(--body-padding);
     min-height: 100vh;
     background-size: cover;
-    background-image: url('/background.png');
+    background-image: url('/background.webp');
     background-attachment: fixed;
     font-smooth: auto;
     -webkit-font-smoothing: antialiased;

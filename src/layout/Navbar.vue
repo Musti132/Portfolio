@@ -7,7 +7,8 @@ const views = ['Home', 'Contact'];
         <ul class="flex gap-16 w-full justify-center">
             <li v-for="view in views" :key="view">
                 <a
-                    @click="$router.push({ name: view })"
+                    @click="$event.preventDefault(); $router.push({ name: view })"
+                    href="/contact"
                     :class="{
                         'text-cyan-500': $route.name === view,
                         'text-white/80': $route.name !== view,
