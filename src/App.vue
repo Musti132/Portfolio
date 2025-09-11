@@ -19,6 +19,9 @@ const springProgress = ref(0);
 const canvas = useTemplateRef<HTMLCanvasElement>('canvas');
 const main = useTemplateRef<HTMLDivElement>('main');
 
+const lineWidth: number = 2;
+const strokeStyle: string = 'rgba(255, 255, 255, 0.18)';
+
 /* Screen Size Reactive Properties */
 const slideX = useSpring(200, { bounce: 0.2, duration: 600 });
 const opacity = useSpring(0, { bounce: 0.2 });
@@ -84,26 +87,32 @@ const initializeCanvas = () => {
 const drawBorder = (ctx: CanvasRenderingContext2D, width: number, height: number) => {
     ctx.clearRect(0, 0, width, height);
 
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.18)';
-    ctx.lineWidth = 1;
+    const lw = lineWidth;
+    const inset = lw / 2;
+    ctx.strokeStyle = strokeStyle;
+    ctx.lineWidth = lw;
+
+    const w = Math.max(0, width - lw);
+    const h = Math.max(0, height - lw);
+    const r = 20;
 
     if (typeof ctx.roundRect === 'function') {
         ctx.beginPath();
-        ctx.roundRect(0.5, 0.5, width, height, 20);
+        ctx.roundRect(inset, inset, w, h, r - lw);
         ctx.stroke();
     } else {
         // fallback for older browsers
-        const radius = 20;
+        const radius = Math.min(r, w / 2, h / 2);
         ctx.beginPath();
-        ctx.moveTo(radius, 0.5);
-        ctx.lineTo(width - radius, 0.5);
-        ctx.quadraticCurveTo(width - 0.5, 0.5, width - 0.5, radius);
-        ctx.lineTo(width - 0.5, height - radius);
-        ctx.quadraticCurveTo(width - 0.5, height - 0.5, width - radius, height - 0.5);
-        ctx.lineTo(radius, height - 0.5);
-        ctx.quadraticCurveTo(0.5, height - 0.5, 0.5, height - radius);
-        ctx.lineTo(0.5, radius);
-        ctx.quadraticCurveTo(0.5, 0.5, radius, 0.5);
+        ctx.moveTo(inset + radius, inset);
+        ctx.lineTo(inset + w - radius, inset);
+        ctx.quadraticCurveTo(inset + w, inset, inset + w, inset + radius);
+        ctx.lineTo(inset + w, inset + h - radius);
+        ctx.quadraticCurveTo(inset + w, inset + h, inset + w - radius, inset + h);
+        ctx.lineTo(inset + radius, inset + h);
+        ctx.quadraticCurveTo(inset, inset + h, inset, inset + h - radius);
+        ctx.lineTo(inset, inset + radius);
+        ctx.quadraticCurveTo(inset, inset, inset + radius, inset);
         ctx.closePath();
         ctx.stroke();
     }
@@ -117,45 +126,44 @@ const drawBorder = (ctx: CanvasRenderingContext2D, width: number, height: number
  * Remove top right border to create a 1/4 rectangle cut out effect
  */
 const drawWidgetBorder = () => {
-    if (!canvas.value) return;
+    if (!canvas.value || !main?.value) return;
     const ctx = canvas.value.getContext('2d');
-
     if (!ctx) return;
-    if (!main?.value) return;
 
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.18)';
+    const lw = lineWidth;
+    const cssW = main.value.offsetWidth;
+    const cssH = main.value.offsetHeight;
+    const widgetHeight = document.querySelector('.widget')?.clientHeight || 400;
+    ctx.strokeStyle = strokeStyle;
+    ctx.lineWidth = lw;
 
-    ctx.lineWidth = 1;
+    ctx.clearRect(0, 0, cssW, cssH);
 
-    ctx.clearRect(0, 0, canvas.value.width, canvas.value.height);
+    const inset = lw / 2;
+    const w = cssW - lw;
+    const h = cssH - lw;
+    const rBase = 20;
+    const r = Math.min(rBase, w / 2, h / 2);
 
-    const x = main.value.offsetWidth;
-    const xWithOffset = main.value.offsetWidth + 40;
-    const y = main.value.offsetHeight;
-    const yWithOffset = main.value.offsetHeight - 900;
+    const cutX = w / 2;
+    const yCut = Math.max(inset + r, Math.min(h - r, widgetHeight + 120 - inset));
 
     ctx.beginPath();
-    ctx.moveTo(0, 0);
-    ctx.roundRect(20, 0.5, xWithOffset / 2 - 30, 0, 8); // Top-left corner to top-middle
-    ctx.arcTo(xWithOffset / 2, 0.5, xWithOffset / 2, 8, 8); // Top-middle corner
-    ctx.roundRect(xWithOffset / 2, 6, 0, yWithOffset / 2 - 20, 8); // Top-middle to center
-    ctx.arcTo(xWithOffset / 2, yWithOffset / 2, xWithOffset / 2 + 20, yWithOffset / 2, 8); // Corner center to right-middle
-    ctx.roundRect(xWithOffset / 2 + 6, yWithOffset / 2, x - (xWithOffset / 2 + 20), 0, 8); // Center to right-middle
-    ctx.arcTo(x, yWithOffset / 2, x, yWithOffset / 2 + 30, 8); // Right-middle corner to bottom-right
-    ctx.roundRect(x, yWithOffset / 2 + 6, 0, y, 8); // Right middle to bottom-right
-    ctx.moveTo(x, y - 25);
-    ctx.arcTo(x, y, 0.5, y, 20);
-    ctx.roundRect(10, y, x - 28, 0, 20);
 
-    const left = 0;
-    const r = 20;
-    const topY = 0.5;
-
-    ctx.moveTo(left + r, y);
-    ctx.arc(left + r, y - r, r, Math.PI / 2, Math.PI);
-    ctx.lineTo(left, topY + r);
-    ctx.arc(left + r, topY + r, r, Math.PI, -Math.PI / 2);
-
+    ctx.moveTo(inset + r, inset); // Start position top left corner
+    ctx.lineTo(cutX - r, inset); // Left half of the top edge (from left corner to midpoint)
+    ctx.moveTo(inset + r, inset); //  Start position top left corner
+    ctx.quadraticCurveTo(inset, inset, inset, inset + r); // top-left corner curve
+    ctx.lineTo(inset, h - r); // left side
+    ctx.quadraticCurveTo(inset, h, inset + r, h); // bottom-left corner
+    ctx.lineTo(w - r, h); // bottom edge
+    ctx.quadraticCurveTo(w, h, w, h - r); // bottom-right corner
+    ctx.lineTo(w, widgetHeight + 140 - inset); // right side up to widget height,
+    ctx.quadraticCurveTo(w, yCut, w - r, yCut); // Curve to left center
+    ctx.lineTo(cutX + r, yCut); // Center
+    ctx.quadraticCurveTo(cutX, yCut, cutX, yCut + r - 40); // Curve to top center
+    ctx.lineTo(cutX, inset + r); // Up to top center
+    ctx.quadraticCurveTo(cutX, inset, cutX - r, inset); // Curve to left
     ctx.stroke();
 };
 
