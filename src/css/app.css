@@ -46,6 +46,7 @@ body {
     margin: 0;
     padding: var(--body-padding);
     min-height: 100vh;
+    background-color: #1e272e;
     background-size: cover;
     background-image: url('/background.webp');
     background-attachment: fixed;

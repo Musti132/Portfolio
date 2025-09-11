@@ -109,16 +109,18 @@ const widgetBlockerStyle = computed(() => {
 <template>
     <div id="home" class="grid sm:grid-cols-1 lg:grid-cols-5 w-full">
         <div class="col-span-2 row-span-1 flex-col">
-            <div class="flex items-center gap-4">
-                <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-4">MUSTAFA</h1>
-                <FontAwesomeIcon
-                    :icon="['fab', 'linkedin']"
-                    class="text-3xl text-white/80 cursor-pointer"
-                    @click="open(LINKEDIN_LINK, '_blank')" />
-                <FontAwesomeIcon
-                    :icon="['fab', 'github']"
-                    class="text-3xl text-white/80 cursor-pointer"
-                    @click="open(GITHUB_LINK, '_blank')" />
+            <div class="flex flex-col lg:flex-row items-center gap-4">
+                <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-white">MUSTAFA</h1>
+                <div class="flex gap-4">
+                    <FontAwesomeIcon
+                        :icon="['fab', 'linkedin']"
+                        class="text-3xl text-white/80 cursor-pointer inline-flex"
+                        @click="open(LINKEDIN_LINK, '_blank')" />
+                    <FontAwesomeIcon
+                        :icon="['fab', 'github']"
+                        class="text-3xl text-white/80 cursor-pointer inline-flex"
+                        @click="open(GITHUB_LINK, '_blank')" />
+                </div>
             </div>
             <p class="text-lg sm:text-xl lg:text-2xl text-white/80 mb-6">
                 A passionate software developer specializing in web applications, AI integration, and modern
@@ -133,12 +135,13 @@ const widgetBlockerStyle = computed(() => {
             <Timeline />
         </div>
         <div class="col-span-1 row-span-5 relative"></div>
+        <!-- Skills -->
         <div class="col-span-2 row-span-5 sm:mx-auto">
             <div
                 ref="widgetBlocker"
                 :style="widgetBlockerStyle"
                 class="relative transform-gpu mb-4 lg:col-span-2 pointer-events-none"></div>
-            <h1 class="text-6xl font-bold text-white mb-4">Skills</h1>
+            <h1 class="text-6xl font-bold text-white mb-10 lg:text-left md:text-center">Skills</h1>
             <p class="text-lg sm:text-xl lg:text-2xl text-white/80 mb-6 max-w-3xl">
                 Proficient in JavaScript, TypeScript, Vue.js, React, Node.js, PHP, Laravel, MySQL, and PostgreSQL.
                 Experienced with RESTful APIs, GraphQL, and version control using Git.
@@ -184,11 +187,12 @@ const widgetBlockerStyle = computed(() => {
             </div>
         </div>
     </div>
-    <!-- Skills -->
+
+    <!-- Projects -->
     <div class="grid sm:grid-cols-1 lg:grid-cols-5 w-full">
-        <div class="col-span-5 row-span-1 flex-">
+        <div class="col-span-5 row-span-1 flex items-center flex-col">
             <h1 class="text-6xl font-bold text-white mb-10">Projects</h1>
-            <div class="grid sm:grid-cols-1 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+            <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 <Card
                     v-for="repo in repos"
                     :key="repo.name"

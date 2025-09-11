@@ -48,7 +48,7 @@ const props = withDefaults(defineProps<PropsForDefaults>(), {
                 <p v-if="props.subtitle" class="text-sm text-white/70 mt-1">{{ props.subtitle }}</p>
             </div>
         </div>
-        <div class="flex-1 gap-2 flex">
+        <div class="gap-2 flex">
             <slot name="badge" class="self-start flex"> </slot>
         </div>
 

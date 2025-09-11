@@ -3,7 +3,7 @@ import Button from '@/components/Button.vue';
 </script>
 
 <template>
-    <div class="w-full max-h-fit">
+    <div class="md:max-w-xl xl:max-w-lg 2xl:max-w-full max-h-fit">
         <h1 class="text-6xl font-bold text-white">CONTACT</h1>
 
         <p class="text-white/70 mt-4 max-w-2xl">
