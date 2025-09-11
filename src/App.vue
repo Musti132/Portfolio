@@ -90,7 +90,7 @@ const drawBorder = (ctx: CanvasRenderingContext2D, width: number, height: number
 
     if (typeof ctx.roundRect === 'function') {
         ctx.beginPath();
-        ctx.roundRect(0.5, 0.5, width - 1, height - 1, 20);
+        ctx.roundRect(0.5, 0.5, width, height, 20);
         ctx.stroke();
     } else {
         // fallback for older browsers
