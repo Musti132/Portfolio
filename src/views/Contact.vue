@@ -2,12 +2,19 @@
 import Button from '@/components/Button.vue';
 import { ref } from 'vue';
 
-const WEB3FORMS_ACCESS_KEY = '5abc17db-b0f1-41d1-86fc-dcf4507eda10';
 const name = ref('');
 const email = ref('');
 const message = ref('');
+const error = ref(false);
 
 const submitForm = async () => {
+    if (!name.value || !message.value) {
+        error.value = true;
+        return;
+    }
+
+    error.value = false;
+
     const response = await fetch('/submit', {
         method: 'POST',
         headers: {
@@ -15,12 +22,19 @@ const submitForm = async () => {
             Accept: 'application/json',
         },
         body: JSON.stringify({
-            access_key: WEB3FORMS_ACCESS_KEY,
             name: name.value,
             email: email.value,
             message: message.value,
+            subject: 'Contact Form',
         }),
     });
+
+    if (response.ok) {
+        alert('Message sent successfully!');
+        name.value = '';
+        email.value = '';
+        message.value = '';
+    }
 };
 </script>
 
@@ -35,12 +49,14 @@ const submitForm = async () => {
 
         <div class="mt-8 flex flex-col gap-4 max-w-2xl">
             <div class="flex flex-col gap-4">
+                <span class="text-red-500" v-if="error">* Please fill in all required fields.</span>
                 <div class="flex flex-col sm:flex-row gap-4">
                     <input
                         type="text"
                         placeholder="Your Name"
                         v-model="name"
-                        class="w-full p-3 rounded-lg bg-white/10 border border-white/20 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500 transition" />
+                        class="w-full p-3 rounded-lg bg-white/10 border text-white focus:outline-none focus:ring-2 focus:ring-cyan-500 transition"
+                        :class="{ 'border-red-500': error, 'border-white/20': !error }"/>
                     <input
                         type="email"
                         v-model="email"
@@ -51,7 +67,8 @@ const submitForm = async () => {
                     rows="5"
                     v-model="message"
                     placeholder="Your Message"
-                    class="w-full p-3 rounded-lg bg-white/10 border border-white/20 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500 transition"></textarea>
+                    class="w-full p-3 rounded-lg bg-white/10 border text-white focus:outline-none focus:ring-2 focus:ring-cyan-500 transition"
+                    :class="{ 'border-red-500': error, 'border-white/20': !error }"></textarea>
                 <Button
                     buttonText="Send Message"
                     type="submit"
