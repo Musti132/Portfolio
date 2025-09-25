@@ -29,7 +29,7 @@ const props = withDefaults(defineProps<PropsForDefaults>(), {
         :href="props.badgeHref"
         target="_blank"
         rel="noopener noreferrer"
-        class="text-white rounded-md text-sm font-medium transition-colors w-fit"
+        class="text-light rounded-md text-sm font-medium transition-colors w-fit"
         :aria-label="badgeHref"
         :class="{
             'bg-blue-500 hover:bg-blue-500/50': color === 'primary',
@@ -38,8 +38,8 @@ const props = withDefaults(defineProps<PropsForDefaults>(), {
             'bg-red-500 hover:bg-red-500/50': color === 'danger',
             'bg-yellow-500 hover:bg-yellow-500/50': color === 'warning',
             'bg-teal-500 hover:bg-teal-500/50': color === 'info',
-            'bg-white/20 hover:bg-white/30 text-black': color === 'light',
-            'bg-white/10 hover:bg-white/16 text-white': color === 'dark',
+            'bg-light/20 hover:bg-light/30 text-black': color === 'light',
+            'bg-light/10 hover:bg-light/16 text-light': color === 'dark',
             'bg-transparent': color === 'clear',
         }">
         <FontAwesomeIcon :class="iconClass" :icon="props.badgeIcon" v-if="props.badgeIcon" class="text-2xl" />

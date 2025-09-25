@@ -11,7 +11,7 @@ const ToolTipDirective = {
         const createTooltipElement = (tooltipText: string) => {
             const tooltip = document.createElement('div');
             tooltip.className =
-                'tooltip glass-morphism hidden absolute bg-gray-800 text-white text-sm rounded py-1 px-2 z-10';
+                'tooltip hidden absolute bg-dark text-light text-sm rounded py-1 px-2 z-10';
             tooltip.innerText = tooltipText;
 
             return tooltip;

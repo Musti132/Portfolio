@@ -1,45 +1,46 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref, watch, computed, useTemplateRef } from 'vue';
+import { onMounted, onUnmounted, ref, watch, computed, useTemplateRef, type Ref } from 'vue';
 import Contact from '@/views/Contact.vue';
 import Navbar from '@/layout/Navbar.vue';
-import { isXLargeScreen, is2XLargeScreen, isLargeDesktop, isLargeScreen, isMediumScreen } from '@/utils/screen';
-import initKonamiCode from './utils/konami';
-import { useSpring, motion } from 'motion-v';
+import { isXLargeScreen, is2XLargeScreen, isDesktop, isLargeScreen, isMediumScreen } from '@/utils/screen';
+import { useSpring } from 'motion-v';
 import emitter from 'tiny-emitter/instance';
-
-/* Konami Properties */
-const rotateValue = ref(0);
-const scaleValue = ref(1);
+import { useColors } from '@/utils/colors';
+const DEFAULT_COLOR = 'rgba(255, 255, 255, 0.18)';
+const { colors } = useColors();
 
 /* Widget Properties */
 const showWidget = ref<boolean>(false);
-const springProgress = ref(0);
 
 /* Canvas Properties */
 const canvas = useTemplateRef<HTMLCanvasElement>('canvas');
 const main = useTemplateRef<HTMLDivElement>('main');
 
+/* Canvas Style Properties */
 const lineWidth: number = 2;
-const strokeStyle: string = 'rgba(255, 255, 255, 0.18)';
+const strokeStyle: Ref<string> = ref(colors.value.secondary || DEFAULT_COLOR);
+
+watch(colors.value, (newStyle) => {
+    strokeStyle.value = newStyle.secondary || DEFAULT_COLOR;
+
+    if (canvas.value && main?.value) {
+        drawBorder(
+            canvas?.value?.getContext('2d') as CanvasRenderingContext2D,
+            main?.value?.offsetWidth as number,
+            main?.value?.offsetHeight as number,
+        );
+    }
+});
 
 /* Screen Size Reactive Properties */
 const slideX = useSpring(200, { bounce: 0.2, duration: 600 });
 const opacity = useSpring(0, { bounce: 0.2 });
 
-// When the spring changes, mirror to simple refs (handy for computed styles)
 const springX = ref(100);
 const springOpacity = ref(0);
 
 slideX.on('change', (latest) => (springX.value = latest));
 opacity.on('change', (latest) => (springOpacity.value = latest));
-
-const x = useSpring(0, {
-    bounce: 0.3,
-});
-
-x.on('change', (latest) => {
-    springProgress.value = latest;
-});
 
 watch(showWidget, (newVal) => {
     if (newVal) {
@@ -84,12 +85,37 @@ const initializeCanvas = () => {
     drawBorder(ctx, appWidth, appHeight);
 };
 
+const getStrokeColor = (width: number): CanvasGradient | string => {
+    if (!canvas.value) return DEFAULT_COLOR;
+    const ctx = canvas.value.getContext('2d');
+    if (!ctx) return DEFAULT_COLOR;
+
+    let strokeColor: CanvasGradient | string = strokeStyle.value;
+
+    if (!colors.value.borderGradient) {
+        strokeColor = strokeStyle.value;
+    } else {
+        const gradient = ctx.createLinearGradient(0, 0, width, 0);
+        const colorStops = colors.value.borderGradient.split(',').map((color) => color.trim());
+
+        colorStops.forEach((colorStop, index) => {
+            const position = index / (colorStops.length - 1);
+            gradient.addColorStop(position, colorStop);
+        });
+
+        strokeColor = gradient;
+    }
+
+    return strokeColor;
+};
+
 const drawBorder = (ctx: CanvasRenderingContext2D, width: number, height: number) => {
     ctx.clearRect(0, 0, width, height);
 
+    ctx.strokeStyle = getStrokeColor(width);
+
     const lw = lineWidth;
     const inset = lw / 2;
-    ctx.strokeStyle = strokeStyle;
     ctx.lineWidth = lw;
 
     const w = Math.max(0, width - lw);
@@ -134,7 +160,7 @@ const drawWidgetBorder = () => {
     const cssW = main.value.offsetWidth;
     const cssH = main.value.offsetHeight;
     const widgetHeight = document.querySelector('.widget')?.clientHeight || 400;
-    ctx.strokeStyle = strokeStyle;
+    ctx.strokeStyle = getStrokeColor(cssW);
     ctx.lineWidth = lw;
 
     ctx.clearRect(0, 0, cssW, cssH);
@@ -168,58 +194,22 @@ const drawWidgetBorder = () => {
 };
 
 onMounted(() => {
-    if (isLargeDesktop) {
-        const resizeObserver = new ResizeObserver(() => {
-            initializeCanvas();
-        });
+    const resizeObserver = new ResizeObserver(() => {
+        initializeCanvas();
+    });
 
-        resizeObserver.observe(main?.value as Element, {
-            box: 'border-box',
-        });
-    }
+    resizeObserver.observe(main?.value as Element, {
+        box: 'border-box',
+    });
 
-    initKonami();
-    if (!isLargeDesktop) return;
+    if (!isDesktop) return;
     window.addEventListener('showWidget', showWidgetToggle);
 });
 
 onUnmounted(() => {
-    if (!isLargeDesktop) return;
+    if (!isDesktop) return;
     window.removeEventListener('showWidget', showWidgetToggle);
 });
-
-const initKonami = () => {
-    initKonamiCode(
-        async () => {
-            const app = document.querySelector('.app') as HTMLElement;
-            if (!app) return;
-
-            app.animate(
-                [
-                    { border: '0px solid red', boxShadow: '0 0 5px red' },
-                    { border: '1px solid red', boxShadow: '0 0 10px red' },
-                    { border: '0px solid red', boxShadow: '0 0 20px red' },
-                    { border: '1px solid red', boxShadow: '0 0 5px red' },
-                ],
-                {
-                    duration: 1000,
-                    iterations: Infinity,
-                    easing: 'ease-in-out',
-                },
-            );
-
-            rotateValue.value += 180;
-            scaleValue.value = 0.8;
-
-            setTimeout(() => {
-                app.getAnimations().forEach((animation) => animation.cancel());
-            }, 3000);
-        },
-        (key) => {
-            console.log('Key in konami code pressed:', key);
-        },
-    );
-};
 
 const widgetTransformStyle = computed(() => {
     return {
@@ -230,29 +220,24 @@ const widgetTransformStyle = computed(() => {
 </script>
 
 <template>
-    <div class="glass-morphism sticky top-0 z-50 mb-8 rounded-md" v-if="!isLargeDesktop">
+    <div class="glass-morphism sticky top-0 z-50 mb-8 rounded-md" v-if="!isDesktop">
         <Navbar />
     </div>
-    <motion.div
-        :animate="{ rotate: rotateValue, scale: scaleValue }"
+    <div
         class="layout flex items-start"
         :class="{ 'gap-4': showWidget }">
-        <div
-            ref="main"
-            class="main glass-morphism app flex flex-col gap-8 min-w-0 flex-animate canvas-shown"
-            :class="{
-                'glass-border': !isLargeDesktop,
-            }">
+        <div ref="main" class="main glass-morphism app flex flex-col gap-8 canvas-shown">
             <div class="container mx-auto max-w-full flex-1">
                 <canvas ref="canvas" class="absolute canvas w-full h-full inset-0"></canvas>
                 <router-view />
             </div>
-            <div class="footer text-white/80 sticky bottom-0 p-2 mb-2 w-full flex justify-end items-center">
+            <div class="footer text-light/80 sticky bottom-0 p-2 mb-2 w-full flex justify-end items-center">
                 <p class="mr-2 text-md">© 2025 Mustafa Al-Nashie. All rights reserved.</p>
             </div>
         </div>
 
         <div
+            v-if="isDesktop"
             class="widget w-full absolute min-h-[400px] flex flex-col gap-8 flex-animate overflow-hidden"
             :class="{
                 'pointer-events-none': !showWidget,
@@ -260,11 +245,16 @@ const widgetTransformStyle = computed(() => {
                 'min-w-[600px]': isXLargeScreen,
             }"
             :style="widgetTransformStyle">
-            <div class="contact-form">
+            <div
+                class="contact-form"
+                :class="{
+                    'max-w-[400px]': isMediumScreen,
+                    'max-w-[600px]': isLargeScreen,
+                }">
                 <Contact></Contact>
             </div>
         </div>
-    </motion.div>
+    </div>
 </template>
 
 <style scoped>
@@ -281,13 +271,6 @@ const widgetTransformStyle = computed(() => {
     pointer-events: none;
 }
 
-.flex-animate {
-    transition:
-        flex-basis 450ms cubic-bezier(0.22, 0.9, 0.35, 1),
-        opacity 350ms ease;
-    will-change: flex-basis, opacity;
-}
-
 .main .container,
 .widget .contact-form {
     border: 0px;
@@ -300,24 +283,5 @@ const widgetTransformStyle = computed(() => {
 
 .widget .contact-form {
     padding: 0.5rem;
-}
-
-@keyframes pulseRed {
-    0% {
-        border: 0px solid red !important;
-        box-shadow: 0 0 5px red;
-    }
-    25% {
-        border: 1px solid red !important;
-        box-shadow: 0 0 10px red;
-    }
-    50% {
-        border: 0px solid red !important;
-        box-shadow: 0 0 20px red;
-    }
-    100% {
-        border: 1px solid red !important;
-        box-shadow: 0 0 5px red;
-    }
 }
 </style>

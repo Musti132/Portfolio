@@ -40,9 +40,9 @@ const submitForm = async () => {
 
 <template>
     <div class="md:max-w-xl xl:max-w-lg 2xl:max-w-full max-h-fit">
-        <h1 class="text-6xl font-bold text-white">CONTACT</h1>
+        <h1 class="text-6xl font-bold text-light">CONTACT</h1>
 
-        <p class="text-white/70 mt-4 max-w-2xl">
+        <p class="text-light/70 mt-4 max-w-2xl">
             I'm always open to discussing new projects, creative ideas, or opportunities to be part of your visions.
             Feel free to reach out to me through this form below.
         </p>
@@ -55,25 +55,25 @@ const submitForm = async () => {
                         type="text"
                         placeholder="Your Name"
                         v-model="name"
-                        class="w-full p-3 rounded-lg bg-white/10 border text-white focus:outline-none focus:ring-2 focus:ring-cyan-500 transition"
+                        class="w-full p-3 rounded-lg bg-light/10 border text-light focus:outline-none focus:ring-2 focus:ring-secondary transition"
                         :class="{ 'border-red-500': error, 'border-white/20': !error }"/>
                     <input
                         type="email"
                         v-model="email"
                         placeholder="Your Email"
-                        class="w-full p-3 rounded-lg bg-white/10 border border-white/20 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500 transition" />
+                        class="w-full p-3 rounded-lg bg-light/10 border border-white/20 text-light focus:outline-none focus:ring-2 focus:ring-secondary transition" />
                 </div>
                 <textarea
                     rows="5"
                     v-model="message"
                     placeholder="Your Message"
-                    class="w-full p-3 rounded-lg bg-white/10 border text-white focus:outline-none focus:ring-2 focus:ring-cyan-500 transition"
+                    class="w-full p-3 rounded-lg bg-light/10 border text-light focus:outline-none focus:ring-2 focus:ring-secondary transition placeholder:text-light/50"
                     :class="{ 'border-red-500': error, 'border-white/20': !error }"></textarea>
                 <Button
                     buttonText="Send Message"
                     type="submit"
                     :buttonAction="submitForm"
-                    class="self-end bg-cyan-500 text-white px-6 py-3 rounded-lg hover:bg-cyan-600 transition"></Button>
+                    class="self-end bg-cyan-500 text-light px-6 py-3 rounded-lg hover:bg-cyan-600 transition"></Button>
             </div>
         </div>
     </div>

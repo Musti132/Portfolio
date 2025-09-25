@@ -33,19 +33,19 @@ const props = withDefaults(defineProps<PropsForDefaults>(), {
 
 <template>
     <div
-        class="glass-card w-full max-w-[300px] min-h-[240px] p-5 rounded-2xl text-gray-100 flex flex-col justify-between h-full gap-4 transition-transform duration-200 hover:-translate-y-1">
+        class="glass-morphism max-w-[320px] border-secondary border-2 min-h-[240px] p-5 rounded-2xl text-gray-100 flex flex-col justify-between h-full gap-4 transition-transform duration-200 hover:-translate-y-1">
         <div class="flex items-center gap-4">
             <div
                 v-if="props.icon || $slots.icon"
-                class="w-14 h-14 min-w-[56px] rounded-lg overflow-hidden flex items-center justify-center bg-white/6">
+                class="w-14 h-14 min-w-[56px] rounded-lg overflow-hidden flex items-center justify-center bg-light/6">
                 <slot name="icon">
                     <img :src="props.icon" alt="icon" class="object-contain w-10 h-10" />
                 </slot>
             </div>
 
             <div class="flex-1">
-                <h3 class="text-lg font-semibold leading-tight">{{ props.body }}</h3>
-                <p v-if="props.subtitle" class="text-sm text-white/70 mt-1">{{ props.subtitle }}</p>
+                <h3 class="text-lg font-semibold text-light leading-tight">{{ props.body }}</h3>
+                <p v-if="props.subtitle" class="text-sm text-light/70 mt-1">{{ props.subtitle }}</p>
             </div>
         </div>
         <div class="gap-2 flex">
@@ -53,11 +53,11 @@ const props = withDefaults(defineProps<PropsForDefaults>(), {
         </div>
 
         <div class="flex-1">
-            <p v-if="props.description" class="text-sm text-white/70">
+            <p v-if="props.description" class="text-sm text-light/70">
                 {{ props.description }}
             </p>
 
-            <div v-if="$slots.default" class="slot-body text-sm text-white/80 mt-2">
+            <div v-if="$slots.default" class="slot-body text-sm text-light/80 mt-2">
                 <slot />
             </div>
         </div>
@@ -68,6 +68,7 @@ const props = withDefaults(defineProps<PropsForDefaults>(), {
                     :buttonText="props.buttonText"
                     :buttonHref="props.buttonHref"
                     :buttonIcon="props.buttonIcon"
+                    :iconClass="'text-primary'"
                     :buttonTooltip="props.buttonTooltip"
                     :openInNewTab="props.openInNewTab"
                     color="dark" />
@@ -75,14 +76,3 @@ const props = withDefaults(defineProps<PropsForDefaults>(), {
         </div>
     </div>
 </template>
-
-<style scoped>
-.glass-card {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.03) 100%);
-    /* background: rgba(238, 82, 83, 0.07); */
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    /* backdrop-filter: blur(10px) saturate(120%); */
-    /* -webkit-backdrop-filter: blur(10px) saturate(120%); */
-    box-shadow: 0 8px 30px rgba(2, 6, 23, 0.35);
-}
-</style>

@@ -10,10 +10,10 @@ const views = ['Home', 'Contact'];
                     @click="$event.preventDefault(); $router.push({ name: view })"
                     href="/contact"
                     :class="{
-                        'text-cyan-500': $route.name === view,
-                        'text-white/80': $route.name !== view,
+                        'text-blue': $route.name === view,
+                        'text-light/80': $route.name !== view,
                     }"
-                    class="text-lg font-semibold hover:text-white/60 transition-colors cursor-pointer"
+                    class="text-lg font-semibold hover:text-light/60 transition-colors cursor-pointer"
                     >{{ view.toUpperCase() }}</a
                 >
             </li>

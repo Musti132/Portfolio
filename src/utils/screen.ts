@@ -1,7 +1,8 @@
 const isMobile = window.innerWidth <= 640;
-const isTablet = window.innerWidth > 640 && window.innerWidth <= 1024;
-const isDesktop = window.innerWidth > 1024;
+const isTablet = window.innerWidth > 640 && window.innerWidth < 1024;
+const isDesktop = window.innerWidth >= 1024;
 const isLargeDesktop = window.innerWidth > 1280;
+const isXLargeDesktop = window.innerWidth > 1536;
 
 // TailwindCSS breakpoints
 const isSmallScreen = window.innerWidth <= 640; // sm
@@ -15,6 +16,7 @@ export {
     isTablet,
     isDesktop,
     isLargeDesktop,
+    isXLargeDesktop,
     isSmallScreen,
     isMediumScreen,
     isLargeScreen,

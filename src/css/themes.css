@@ -1,0 +1,116 @@
+:root {
+    --bg1: #7f5af0;
+    --bg2: #2cb67d;
+    --bg3: #ef4565;
+}
+
+@theme {
+    --color-primary: #aab9ff;
+    --color-secondary: #aab9ff;
+    --color-dark: oklch(27.4% 0.006 286.033);
+    --color-blue: oklch(71.5% 0.143 215.221);
+    --color-light: #fff;
+    --glow-color: none;
+    --bg-size: 140% 140%, 140% 140%, 140% 140%, auto;
+    --bg-animation: moveBg 2.5s ease-in-out infinite alternate;
+    --background:
+        radial-gradient(1200px 800px at 20% 10%, var(--bg1), transparent 60%),
+        radial-gradient(1000px 900px at 90% 20%, var(--bg2), transparent 60%),
+        radial-gradient(900px 900px at 40% 90%, var(--bg3), transparent 60%),
+        radial-gradient(900px 900px at 50% 50%, var(--bg3), transparent 60%), #0e1016;
+}
+
+@layer base {
+    [data-theme='windows-xp'] {
+        --color-primary: #0056e0;
+        --color-secondary: #7ec850;
+        --color-dark: #1a3a6e;
+        --color-blue: #1d82f0;
+        --color-light: #ffffff;
+        --glow-color: #ffd700;
+        --border-gradient: #0056e0, #7ec850, #ffd700;
+        --background: linear-gradient(180deg, #87ceeb 0%, #87ceeb 50%, #7ec850 100%);
+    }
+
+    [data-theme='night-sky'] {
+        --color-primary: #7dd3fc;
+        --color-secondary: #b298dc;
+        --color-dark: #0b1020;
+        --color-blue: #93c5fd;
+        --color-light: #f3f4f6;
+        --glow-color: #7dd3fc;
+        --bg-size: auto;
+        --bg-animation: none;
+        --border-gradient: #7dd3fc, #f472b6, #a78bfa;
+        --background: url('/stars.svg');
+    }
+
+    [data-theme='ghost'] {
+        --bg-size: auto;
+        --bg-animation: none;
+        --color-primary: white;
+        --color-secondary: white;
+        --color-dark: black;
+        --color-blue: white;
+        --color-light: white;
+        --background: black;
+        --bg-size: auto;
+        --bg-animation: none;
+    }
+
+    [data-theme='neon'] {
+        --color-primary: #9100ff;
+        --color-secondary: #9100ff;
+        --color-dark: #14091d;
+        --color-blue: #00ff91;
+        --color-light: #00ff91;
+        --bg-size: auto;
+        --bg-animation: none;
+        --background: url('/neon.webp');
+        --glow-color: var(--color-light);
+    }
+
+    [data-theme='ocean'] {
+        --color-primary: #328cd1;
+        --color-secondary: #00a8ff;
+        --color-dark: #07212b;
+        --color-blue: #00a8ff;
+        --color-light: #f2fbff;
+        --bg-size: auto;
+        --bg-animation: none;
+        --border-gradient: #00a8ff, #00458e, #359eb4, #4fb7b3;
+        --background: linear-gradient(180deg, #073042 0%, #07212b 60%, #06161e 100%);
+    }
+
+    [data-theme='psychedelic'] {
+        --color-primary: #ff00ff;
+        --color-secondary: #00ff9f;
+        --color-dark: #0d0221;
+        --color-blue: #00c2ff;
+        --color-light: #f9f871;
+        --border-gradient: #ff00ff, #00ff9f, #00c2ff, #f9f871;
+        --background: url('/pppsychedelic.webp');
+        --bg-animation: moveBg 2s ease-in-out infinite alternate;
+    }
+
+    [data-theme='fiesta'] {
+        --color-primary: #ff2e00;
+        --color-secondary: #ff7f11;
+        --color-dark: #240046;
+        --color-blue: #00f5ff;
+        --color-light: #ffd60a;
+        --glow-color: #ff7f11;
+        --border-gradient: #ff2e00, #ff7f11, #ffd60a;
+        --background: #240046;
+    }
+
+    [data-theme='forest'] {
+        --color-primary: #2b9348;
+        --color-secondary: #55a630;
+        --color-dark: #081c15;
+        --color-blue: #80ed99;
+        --color-light: #d8f3dc;
+        --border-gradient: #2b9348, #55a630, #80ed99;
+        --background: linear-gradient(180deg, #081c15 0%, #0a1f16 100%);
+    }
+}
