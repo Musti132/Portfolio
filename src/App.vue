@@ -149,7 +149,7 @@ const drawBorder = (ctx: CanvasRenderingContext2D, width: number, height: number
 };
 
 /**
- * Remove top right border to create a 1/4 rectangle cut out effect
+ * Remove 1/4 of the border
  */
 const drawWidgetBorder = () => {
     if (!canvas.value || !main?.value) return;
@@ -223,9 +223,7 @@ const widgetTransformStyle = computed(() => {
     <div class="glass-morphism sticky top-0 z-50 mb-8 rounded-md" v-if="!isDesktop">
         <Navbar />
     </div>
-    <div
-        class="layout flex items-start"
-        :class="{ 'gap-4': showWidget }">
+    <div class="layout flex items-start" :class="{ 'gap-4': showWidget }">
         <div ref="main" class="main glass-morphism app flex flex-col gap-8 canvas-shown">
             <div class="container mx-auto max-w-full flex-1">
                 <canvas ref="canvas" class="absolute canvas w-full h-full inset-0"></canvas>

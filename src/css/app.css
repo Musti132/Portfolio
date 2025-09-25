@@ -53,6 +53,7 @@ body {
     background-size: var(--bg-size, auto);
     background-color: var(--color-dark, #000);
     animation: var(--bg-animation, none);
+    contain: paint;
     font-smooth: auto;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;

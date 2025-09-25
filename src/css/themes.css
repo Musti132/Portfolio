@@ -54,8 +54,6 @@
         --color-blue: white;
         --color-light: white;
         --background: black;
-        --bg-size: auto;
-        --bg-animation: none;
     }
 
     [data-theme='neon'] {
@@ -90,7 +88,7 @@
         --color-light: #f9f871;
         --border-gradient: #ff00ff, #00ff9f, #00c2ff, #f9f871;
         --background: url('/pppsychedelic.webp');
-        --bg-animation: moveBg 2s ease-in-out infinite alternate;
+        --bg-animation: moveBg 8s ease-in-out infinite alternate;
     }
 
     [data-theme='fiesta'] {
@@ -102,6 +100,7 @@
         --glow-color: #ff7f11;
         --border-gradient: #ff2e00, #ff7f11, #ffd60a;
         --background: #240046;
+        --bg-animation: none;
     }
 
     [data-theme='forest'] {
@@ -112,5 +111,6 @@
         --color-light: #d8f3dc;
         --border-gradient: #2b9348, #55a630, #80ed99;
         --background: linear-gradient(180deg, #081c15 0%, #0a1f16 100%);
+        --bg-animation: none;
     }
 }
